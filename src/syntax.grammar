@@ -1,45 +1,34 @@
-@top Program { SyntaxNode }
+@top Program { FormatIrElement }
 
 @skip { space  }
 
-SyntaxNode {
-  SyntaxNodeType '{' 
-    (SyntaxNodePair ',')+
-  '}'
+FormatIrElement {
+  (String | FormatIrList | Identifier | FormatIrCallExpression | FormatIrIdInfo | FormatIrIntern)
 }
 
-
-SyntaxToken {
-  SyntaxTokenType '@' Range String TriviaPart TriviaPart
-}
-
-SyntaxNodeList {
-  SyntaxNodeType '[' 
-    ((SyntaxNode | SyntaxToken)  ',')*
+FormatIrList {
+  '[' 
+    FormatIrElement (',' FormatIrElement)*
   ']'
 }
 
-Range {
-  Number '.' '.' Number
+FormatIrIdInfo {
+  '{' Identifier ':' '#' Number '}'
 }
 
-TriviaPart {
-  '[' TriviaList? ']'
+FormatIrIntern {
+  '<' 'ref'? 'interned' '*'? Number  '>'
+}
+
+FormatIrCallExpression {
+  Identifier 
+  '(' 
+      FormatIrElement (',' FormatIrElement)*
+  ')'
 }
 
 
-TriviaList {
- Trivia (',' Trivia)*
-}
 
-Trivia {
-  Identifier '(' String ')'
-}
-
-
-SyntaxNodePair {
-  SyntaxNodePairKey ':' (SyntaxNode | SyntaxToken | MissingOptional | MissingRequired | SyntaxNodeList)
-}
 
 
 
@@ -50,21 +39,10 @@ SyntaxNodePair {
   Identifier { $[a-zA-Z_]+ }
   space { $[ \t\n\r]+ }
 
-  SyntaxNodePairKey { $[a-z_]+ }
-
-  // Workaround for ambiguity between `SyntaxNodeType` and `SyntaxTokenType`
-  SyntaxNodeType { $[A-Z]$[a-z]$[A-Za-z]* }
-
-  SyntaxTokenType { $[A-Z_]+ }
-    
-  @precedence { SyntaxNodeType,SyntaxTokenType }
-
-  MissingOptional { 'missing (optional)' }
-  MissingRequired { 'missing (required)' }
-
   "[" "]"
   "{" "}"
   "(" ")"
+  "<" ">"
 }
 
 @detectDelim

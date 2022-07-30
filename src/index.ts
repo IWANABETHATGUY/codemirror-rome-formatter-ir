@@ -17,16 +17,11 @@ export const romeAstLanguage = LRLanguage.define({
       indentNodeProp.add({
       }),
       foldNodeProp.add({
-        SyntaxNode(tree) {
+        FormatIrList: foldInside,
+        FormatIrCallExpression(tree) {
           return {
-            from: tree.getChild('{')!.from + 1,
-            to: tree.getChild('}')!.to -1 
-          }
-        },
-        SyntaxNodeList(tree) {
-          return {
-            from: tree.getChild('[')!.from + 1,
-            to: tree.getChild(']')!.to - 1
+            from: tree.getChild('(')!.from + 1,
+            to: tree.getChild(')')!.to - 1
           }
         }
       }),

@@ -5,26 +5,59 @@ import { parser, romeAst } from "../dist";
 // import { oneDark } from '@codemirror/theme-one-dark';
 
 const doc = `
-JsVariableStatement {
-    declaration: JsVariableDeclaration {
-        kind: LET_KW@0..4 "let" [] [Whitespace(" ")],
-        declarators: JsVariableDeclaratorList [
-            JsVariableDeclarator {
-                id: JsIdentifierBinding {
-                    name_token: IDENT@4..6 "a" [] [Whitespace(" ")],
-                },
-                variable_annotation: missing (optional),
-                initializer: JsInitializerClause {
-                    eq_token: EQ@6..8 "=" [] [Whitespace(" ")],
-                    expression: JsNumberLiteralExpression {
-                        value_token: JS_NUMBER_LITERAL@8..9 "3" [] [],
-                    },
-                },
-            },
-        ],
-    },
-    semicolon_token: SEMICOLON@9..10 ";" [] [],
-}
+[
+  "function",
+  " ",
+  "test",
+  group(["(", ")"]),
+  " ",
+  "{",
+  indent(element, [
+    hard_line_break,
+    "let",
+    " ",
+    group([
+      group([
+        group(["render"]),
+        " ",
+        "=",
+        group([indent([soft_line_break_or_space])], { id: #1 }),
+        line_suffix_boundary,
+        if_group_breaks(
+          [
+            indent([
+              <interned 0> [
+                " ",
+                "fjewiojiewajijfjfewaijjfjewaiiijjjjjjjjjjjjjjjjjjjjjjjfaweijjjfjwaieeeeeeeeeeeeeefjeawofjaweoooooooooooofejwiaaaaaaaaaaafejawiiiiiii"
+              ]
+            ])
+          ],
+          { id: #1 }
+        ),
+        if_group_fits_on_line([<ref interned *0>], { id: #1 })
+      ])
+    ]),
+    ";",
+    hard_line_break,
+    "something",
+    ";",
+    hard_line_break,
+    "fdjajiewj",
+    ";",
+    hard_line_break,
+    "fjeaiojefaw",
+    ";",
+    hard_line_break,
+    "feajifjawo",
+    ";",
+    hard_line_break,
+    "feaiwjfiowa",
+    ";"
+  ]),
+  hard_line_break,
+  "}",
+  hard_line_break
+]
 `;
 
 new EditorView({
